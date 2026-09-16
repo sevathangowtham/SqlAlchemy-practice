@@ -43,13 +43,19 @@ def add_product():
     product = Product(ProductName=product_name, Brand=brand, Quantity=quantity)
     session.add(product)
     session.commit()
-print(session.query(Product).all())
-result1 = session.query(User).all()
-for pro in result1:
-    print(f"Name: {pro.Name}, Email: {pro.Email}, Gender: {pro.Gender}")
-result = session.query(Product).all()
-for pro in result:
-    print(f"Product Name: {pro.ProductName}, Brand: {pro.Brand}, Quantity: {pro.Quantity}")
+
+def view_user():
+    #print(session.query(User).all())
+#print(session.query(Product).all()) 
+
+    result1 = session.query(User).all()
+    for pro in result1:
+        print(f"Name: {pro.Name}, Email: {pro.Email}, Gender: {pro.Gender}")
+
+def view_product ():
+    result = session.query(Product).all()
+    for pro in result:
+        print(f"Product Name: {pro.ProductName}, Brand: {pro.Brand}, Quantity: {pro.Quantity}")
 
 def update_user():
     user_id = int(input('Enter the user ID to update:'))
@@ -98,3 +104,34 @@ def delete_product():
         print('Product deleted successsfuly!')
     else:
         print('Product not found!')
+while True :
+    print('1) Add User :'
+      '\n2) Add Product :'
+      '\n3) View User :'
+      '\n4) View Product :'
+      '\n5) User Update :'
+      '\n6) Product Update :'
+      '\n7) Delete User :'
+      '\n8) Delte Product :'
+      '\n9) Exit')
+    choice = int(input('Enter the choice :'))
+
+    if choice ==1 :
+        add_user()
+    if choice ==2 :
+        add_product()
+    if choice ==3 :
+        view_user()
+    if choice ==4 :
+        view_product()
+    if choice ==5:
+        update_user()
+    if choice ==6:
+        update_product()
+    if choice ==7:
+        delete_user()
+    if choice == 8:
+        delete_product()
+    if choice == 9:
+        print('chose the correct option!')
+        break
