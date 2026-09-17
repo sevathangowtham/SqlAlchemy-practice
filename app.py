@@ -65,6 +65,13 @@ def view_user_api():
         all_user.append ({'ID ' : re.Id , 'Name' : re.Name , 'Email': re.Email , 'Gender': re.Gender})
     return {'Users ': all_user}
 
+@app.route('/view_product', methods = ['GET'])
+def view_product_api():
+    pr_result = session.query(Product).all()
+    all_product = []
+    for P in pr_result:
+        all_product.append({'ID' : P.Id , 'Product Name' : P.ProductName,'Brand' : P.Brand, 'quanity' : P.Quantity})
+    return {"Product's": all_product}
 
 
 
