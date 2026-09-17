@@ -31,6 +31,10 @@ Base.metadata.create_all(engine)
 #Flack
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return('Wellcome to our application!')
+
 @app.route('/add_user', methods=['POST'])
 def add_user_api():
     data = request.json
@@ -41,6 +45,28 @@ def add_user_api():
     session.add(user)
     session.commit()
     return {"message": "User added successfully"}
+
+@app.route('/add_product',methods = ['POST'])
+def add_product_api():
+    data1 = request.json
+    productname= data1['productname']
+    brand = data1['brand']
+    quantity = data1['quantity']
+    product = Product( ProductName =productname, Brand = brand, Quantity = quantity)
+    session.add(product)
+    session.commit()
+    return {'Message' : 'Product added successfully!' }
+
+@app.route('/view_user', methods = ['GET'])
+def view_user_api():
+    result = session.query(User).all()
+    all_user =[]
+    for re in result:
+        all_user.append ({'ID ' : re.Id , 'Name' : re.Name , 'Email': re.Email , 'Gender': re.Gender})
+    return {'Users ': all_user}
+
+
+
 
 
 if __name__ == '__main__':
