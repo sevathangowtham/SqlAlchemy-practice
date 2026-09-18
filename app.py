@@ -73,8 +73,50 @@ def view_product_api():
         all_product.append({'ID' : P.Id , 'Product Name' : P.ProductName,'Brand' : P.Brand, 'quanity' : P.Quantity})
     return {"Product's": all_product}
 
+@app.route('/user_update/<int:user_id>',methods =['PUT'])
+def user_update(user_id):
+    data = request.json
+    user = session.query(User).filter_by(Id = user_id).first()
+    if user:
+        user.Name = data['name']
+        user.Email = data['email']
+        user.Gender = data['gender']
+        session.commit()
+        return{"Message" : "User updated sucessfully!"}
+    else:
+        return{'Message' : 'User not found!'}
 
+@app.route('/product_update/<int:product_id>',methods = ['PUT'])
+def product_update(product_id):
+    data = request.json
+    product = session.query(Product).filter_by(Id =product_id).first()
+    if product:
+        product.ProductName =data['productname']
+        product.Brand = data['brand']
+        product.Quantity = data['quantity']
+        session.commit()
+        return {'Message' : 'Updated successfully!'}
+    else:
+        return {'Message' : 'Id not found!'}
 
+@app.route('/delete_user/<int:user_id>',methods = ['DELETE'])
+def delete_use(user_id):
+    user = session.query(User).filter_by(Id = user_id).first()
+    if user:
+        session.delete(user)
+        session.commit()
+        return{'Message' : 'user deleted successfully!'}
+    else:
+        return{'Message' : 'user not found!'}
 
+@app.route('/delete_product/<int:product_id>',methods = ['DELETE'])
+def delete_product(product_id):
+    product = session.query(User).filter_by(Id = product_id).first()
+    if product:
+        session.delete(product)
+        session.commit()
+        return{'Message' : 'user deleted successfully!'}
+    else:
+        return{'Message' : 'user not found!'}
 if __name__ == '__main__':
     app.run(debug=True)
