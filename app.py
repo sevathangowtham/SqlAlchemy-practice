@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Integer,String,ForeignKey,Column
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from flask import Flask,request
+import pandas as pd
 
 
 engine = create_engine('sqlite:///database.db',echo = False)
@@ -118,5 +119,30 @@ def delete_product(product_id):
         return{'Message' : 'user deleted successfully!'}
     else:
         return{'Message' : 'user not found!'}
+
+
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.json
+    num1 = data['num1']
+    num2 = data['num2']
+    result = num1 + num2  # pretend this is a real ML model's prediction
+    return {"result": result}
+
+
+import pickle
+with open('house_model.pkl', 'rb') as f:
+    house_model = pickle.load(f)
+@app.route('/house_prediction', methods=['POST'])
+def house_prediction_api():
+    data = request.json
+    sq = data['size']
+    rooms = data['rooms']
+    prediction = house_model.predict([[sq, rooms]])
+    return {"predicted_price": prediction[0][0]}
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
